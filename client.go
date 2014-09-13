@@ -1,4 +1,4 @@
-package cloudflare
+package go_cloudflare
 
 import (
 	"encoding/json"
