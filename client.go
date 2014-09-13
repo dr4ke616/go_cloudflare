@@ -1,47 +1,84 @@
-package main
+package cloudflare
 
 import (
-	"bytes"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 )
 
-func make_request() {
-
-	apiUrl := "https://www.cloudflare.com"
-	resource := "/api_json.html"
-
-	data := url.Values{}
-	data.Add("email", "accounts@glassrobotstudios.com")
-	data.Add("tkn", "d609ccba709d89a59e29be77504796e383503")
-	data.Add("a", "zone_load_multi")
-	// data.Add("z", "glassrobotstudios.com")
-
-	u, _ := url.ParseRequestURI(apiUrl)
-	u.Path = resource
-	urlStr := fmt.Sprintf("%v", u)
-
-	log.Println(urlStr)
-	log.Println(bytes.NewBufferString(data.Encode()))
-
-	client := &http.Client{}
-	r, _ := http.NewRequest("POST", urlStr, bytes.NewBufferString(data.Encode()))
-	r.Header.Add("Content-type", "application/x-www-form-urlencoded")
-	r.Header.Add("Accept", "text/plain")
-
-	resp, _ := client.Do(r)
-	defer resp.Body.Close()
-
-	log.Println(resp.Status)
-	contents, _ := ioutil.ReadAll(resp.Body)
-
-	log.Println(string(contents))
-
+type Client struct {
+	Token       string
+	Email       string
+	URL         string
+	HttpHandler *http.Client
 }
 
-func main() {
-	make_request()
+func NewClient(email string, token string) (*Client, error) {
+
+	client := Client{
+		Token:       token,
+		Email:       email,
+		URL:         "https://www.cloudflare.com/api_json.html",
+		HttpHandler: http.DefaultClient,
+	}
+
+	return &client, nil
+}
+
+func (c *Client) NewRequest(params map[string]string, method string, action string) (*http.Request, error) {
+	data := url.Values{}
+	u, err := url.Parse(c.URL)
+
+	if err != nil {
+		return nil, fmt.Errorf("Error parsing base URL: %s", err)
+	}
+
+	data.Add("email", c.Email)
+	data.Add("tkn", c.Token)
+	data.Add("a", action)
+
+	for k, v := range params {
+		data.Add(k, v)
+	}
+
+	u.RawQuery = data.Encode()
+
+	req, err := http.NewRequest(method, u.String(), nil)
+
+	if err != nil {
+		return nil, fmt.Errorf("Error creating request: %s", err)
+	}
+
+	return req, nil
+}
+
+func decodeBody(resp *http.Response, out interface{}) error {
+
+	body, err := ioutil.ReadAll(resp.Body)
+
+	if err != nil {
+		return err
+	}
+
+	if err = json.Unmarshal(body, &out); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func checkResponse(resp *http.Response, err error) (*http.Response, error) {
+
+	if err != nil {
+		return resp, err
+	}
+
+	switch i := resp.StatusCode; {
+	case i == 200:
+		return resp, nil
+	default:
+		return nil, fmt.Errorf("API Error: %s", resp.Status)
+	}
 }
