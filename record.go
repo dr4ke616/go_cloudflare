@@ -44,6 +44,14 @@ type UpdateRecord struct {
 	Priority string
 }
 
+type CreateRecord struct {
+	Type     string
+	Name     string
+	Content  string
+	Ttl      string
+	Priority string
+}
+
 func (c *Client) RetrieveAllRecords(domain string) (*RecordsResponse, error) {
 
 	params := make(map[string]string)
@@ -142,4 +150,75 @@ func (c *Client) UpdateRecord(domain string, id string, opts *UpdateRecord) erro
 
 	// The request was successful
 	return nil
+}
+
+func (c *Client) DestroyRecord(domain string, id string) error {
+	params := make(map[string]string)
+	params["z"] = domain
+	params["id"] = id
+
+	req, err := c.NewRequest(params, "POST", "rec_delete")
+	if err != nil {
+		return err
+	}
+
+	resp, err := checkResponse(c.HttpHandler.Do(req))
+	if err != nil {
+		return fmt.Errorf("Error deleting record: %s", err)
+	}
+
+	recordResp := new(RecordResponse)
+	err = decodeBody(resp, &recordResp)
+	if err != nil {
+		return fmt.Errorf("Error parsing record response: %s", err)
+	}
+
+	_, err = recordResp.GetRecord()
+	if err != nil {
+		return err
+	}
+
+	// Record destoryed successfully
+	return nil
+}
+
+func (c *Client) CreateRecord(domain string, opts *CreateRecord) (*Record, error) {
+
+	params := make(map[string]string)
+	params["z"] = domain
+	params["type"] = opts.Type
+	params["name"] = opts.Name
+	params["content"] = opts.Content
+	params["prio"] = opts.Priority
+
+	if opts.Ttl != "" {
+		params["ttl"] = opts.Ttl
+	} else {
+		params["ttl"] = "1"
+	}
+
+	req, err := c.NewRequest(params, "POST", "rec_new")
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := checkResponse(c.HttpHandler.Do(req))
+	if err != nil {
+		return nil, fmt.Errorf("Error creating new record: %s", err)
+	}
+
+	recordResp := new(RecordResponse)
+	err = decodeBody(resp, &recordResp)
+
+	if err != nil {
+		return nil, fmt.Errorf("Error parsing record response: %s", err)
+	}
+
+	record, err := recordResp.GetRecord()
+	if err != nil {
+		return nil, err
+	}
+
+	// We're all good
+	return record, nil
 }
