@@ -122,10 +122,24 @@ func (c *Client) UpdateRecord(domain string, id string, opts *UpdateRecord) erro
 	params["z"] = domain
 	params["id"] = id
 	params["type"] = opts.Type
-	params["name"] = opts.Name
-	params["content"] = opts.Content
-	params["prio"] = opts.Priority
-	params["ttl"] = opts.Ttl
+
+	if opts.Name != "" {
+		params["name"] = opts.Name
+	}
+
+	if opts.Content != "" {
+		params["content"] = opts.Content
+	}
+
+	if opts.Priority != "" {
+		params["prio"] = opts.Priority
+	}
+
+	if opts.Ttl != "" {
+		params["ttl"] = opts.Ttl
+	} else {
+		params["ttl"] = "1"
+	}
 
 	req, err := c.NewRequest(params, "POST", "rec_edit")
 	if err != nil {
@@ -187,9 +201,18 @@ func (c *Client) CreateRecord(domain string, opts *CreateRecord) (*Record, error
 	params := make(map[string]string)
 	params["z"] = domain
 	params["type"] = opts.Type
-	params["name"] = opts.Name
-	params["content"] = opts.Content
-	params["prio"] = opts.Priority
+
+	if opts.Name != "" {
+		params["name"] = opts.Name
+	}
+
+	if opts.Content != "" {
+		params["content"] = opts.Content
+	}
+
+	if opts.Priority != "" {
+		params["prio"] = opts.Priority
+	}
 
 	if opts.Ttl != "" {
 		params["ttl"] = opts.Ttl
