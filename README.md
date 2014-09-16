@@ -40,7 +40,7 @@ log.Println("Record Ttl: ", record.Ttl)
 
 ## Current Status
 
-# DNS Record Management
+**DNS Record Management**
 
 | Function Call      | Cloudflare Call   | Description                                                   |
 | ------------------ | ----------------- | --------------------------------------------------------------|
@@ -48,7 +48,7 @@ log.Println("Record Ttl: ", record.Ttl)
 | UpdateRecord       | rec_edit          | Edit a DNS record                                             |
 | DestroyRecord      | rec_delete        | Delete a DNS record                                           |
 
-# Access
+**Access**
 
 | Function Call      | Cloudflare Call   | Description                                                   |
 | ------------------ | ----------------- | --------------------------------------------------------------|
@@ -59,7 +59,7 @@ log.Println("Record Ttl: ", record.Ttl)
 | Not Supported      | ip_lkup           | Check threat score for a given IP                             |
 | Not Supported      | zone_settings     | List all current setting values                               |
 
-# Modify
+**Modify**
 
 | Function Call      | Cloudflare Call   | Description                                                   |
 | ------------------ | ----------------- | --------------------------------------------------------------|
