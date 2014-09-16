@@ -2,7 +2,7 @@
 Something to be aware of, not all CloudFlare calls are currently supported. This is a new project.
 
 ## Example
-Some examples on how to use Go Cloudflare. You can get your ClouFlare token in the Account section of your profile.
+Some examples on how to use Go Cloudflare. You can get your CloudFlare token in the Account section of your profile.
 
 To get a single record using the record ID (you can find the ID on your cloudflare account):
 ```go
