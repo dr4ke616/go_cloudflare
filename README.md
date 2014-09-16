@@ -1,12 +1,5 @@
 ###Go CloudFlare
-Something to be aware of, not all CloudFlare calls are currently supported.
-
-## Installation
-
-Get Go CloudFlare:
-```bash
-go get go_cloudflare
-```
+Something to be aware of, not all CloudFlare calls are currently supported. This is a new project.
 
 ## Example
 Some examples on how to use Go Cloudflare. You can get your ClouFlare token in the Account section of your profile.
