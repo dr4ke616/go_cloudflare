@@ -1,10 +1,11 @@
-###Go CloudFlare
+# Go CloudFlare
+
 Something to be aware of, not all CloudFlare calls are currently supported. This is a new project.
 
 ## Example
-Some examples on how to use Go CloudFlare. You can get your CloudFlare token in the Account section of your profile.
 
-To get a single record using the record ID (you can find the ID on your cloudflare account):
+An example of how to get a single record using CloudFlare's record ID. You can find your token and any record ID on your CloudFlare profile.
+
 ```go
 import (
     "log"
@@ -33,7 +34,7 @@ log.Println("Record Ttl: ", record.Ttl)
 
 ## Current Status
 
-**DNS Record Management**
+### DNS Record Management
 
 | Function Call      | CloudFlare Call   | Description                                                   |
 | ------------------ | ----------------- | --------------------------------------------------------------|
@@ -41,7 +42,7 @@ log.Println("Record Ttl: ", record.Ttl)
 | UpdateRecord       | rec_edit          | Edit a DNS record                                             |
 | DestroyRecord      | rec_delete        | Delete a DNS record                                           |
 
-**Access**
+### Access
 
 | Function Call      | CloudFlare Call   | Description                                                   |
 | ------------------ | ----------------- | --------------------------------------------------------------|
@@ -52,7 +53,7 @@ log.Println("Record Ttl: ", record.Ttl)
 | Not Supported      | ip_lkup           | Check threat score for a given IP                             |
 | Not Supported      | zone_settings     | List all current setting values                               |
 
-**Modify**
+### Modify
 
 | Function Call      | CloudFlare Call   | Description                                                   |
 | ------------------ | ----------------- | --------------------------------------------------------------|
