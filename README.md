@@ -42,7 +42,7 @@ log.Println("Record Ttl: ", record.Ttl)
 
 **DNS Record Management**
 
-| Function Call      | Cloudflare Call   | Description                                                   |
+| Function Call      | CloudFlare Call   | Description                                                   |
 | ------------------ | ----------------- | --------------------------------------------------------------|
 | CreateRecord       | rec_new           | Add a DNS record                                              |
 | UpdateRecord       | rec_edit          | Edit a DNS record                                             |
@@ -50,7 +50,7 @@ log.Println("Record Ttl: ", record.Ttl)
 
 **Access**
 
-| Function Call      | Cloudflare Call   | Description                                                   |
+| Function Call      | CloudFlare Call   | Description                                                   |
 | ------------------ | ----------------- | --------------------------------------------------------------|
 | RetrieveAllRecords | rec_load_all      | Retrieve DNS Records of a given domain                        |
 | Not Supported      | stats             | Retrieve domain statistics for a given time frame             |
@@ -61,7 +61,7 @@ log.Println("Record Ttl: ", record.Ttl)
 
 **Modify**
 
-| Function Call      | Cloudflare Call   | Description                                                   |
+| Function Call      | CloudFlare Call   | Description                                                   |
 | ------------------ | ----------------- | --------------------------------------------------------------|
 | Not Supported      | sec_lvl           | Set the security level                                        |
 | Not Supported      | cache_lvl         | Set the cache level                                           |
